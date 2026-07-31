@@ -6318,11 +6318,6 @@
             if (ocrPreview) ocrPreview.classList.toggle('hidden', tabName !== 'ocr');
         };
 
-        window.downloadAllBizFiles = function () {
-            var fileNames = bizMaterialFiles.map(function (f) { return f.name; });
-            // Simulated bulk download
-        };
-
         // ===================== Step 4 Click: 识别结果与初审 =====================
         window.clickStep4AiResult = function () {
             var panel = document.getElementById('stepPanel4');
