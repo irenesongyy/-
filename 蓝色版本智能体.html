@@ -717,60 +717,48 @@
             gap: 16px;
         }
 
-        /* ---- Flow Stepper Card — sticky top, parallel to client-profile top ---- */
-        .flow-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            border: 1px solid var(--gray-200);
-            box-shadow: var(--shadow-sm);
-            padding: 16px 20px;
+        /* ---- Flow Stepper — lightweight inline indicator ---- */
+        .flow-steps-simple {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
             position: sticky;
             top: 0;
             z-index: 30;
-        }
-        .flow-steps {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            margin: 0;
-            padding: 0;
-        }
-        .flow-step {
-            display: flex;
-            align-items: center;
-            gap: 12px;
             font-size: 13px;
+        }
+        .flow-step-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             color: var(--gray-400);
             font-weight: 500;
-            transition: color 0.2s;
+            white-space: nowrap;
         }
-        .flow-step .dot {
-            width: 26px; height: 26px;
+        .flow-step-item .dot {
+            width: 22px; height: 22px;
             border-radius: 50%;
             background: var(--gray-200);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: #fff;
             flex-shrink: 0;
-            transition: background 0.2s;
         }
-        .flow-step.active { color: var(--green-mid); }
-        .flow-step.active .dot { background: var(--green-mid); box-shadow: 0 0 0 4px rgba(114,208,204,0.18); }
-        .flow-step.done { color: #16a34a; }
-        .flow-step.done .dot { background: #16a34a; }
-        .flow-divider {
-            flex: 1;
-            height: 2px;
-            background: var(--gray-200);
-            margin: 0 4px;
-            min-width: 20px;
-            border-radius: 4px;
-            transition: background 0.3s;
+        .flow-step-item.active { color: var(--green-mid); }
+        .flow-step-item.active .dot { background: var(--green-mid); }
+        .flow-step-item.done { color: #16a34a; }
+        .flow-step-item.done .dot { background: #16a34a; }
+        .flow-step-divider {
+            color: var(--gray-300);
+            font-size: 16px;
+            font-weight: 300;
+            margin: 0 2px;
         }
-        .flow-divider.done { background: #16a34a; }
+        .flow-step-divider.done { color: #16a34a; }
 
         /* ---- Main Work Area (sidebar + panels) ---- */
         .ai-layout {
@@ -1067,6 +1055,24 @@
             transition: transform 0.15s;
         }
         .radio-item input[type="radio"]:checked + .radio-mark {
+
+        /* ---- Vertical quiz layout ---- */
+        .quiz-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .quiz-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .quiz-row .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            line-height: 1.3;
+        }
             border-color: #4283A3;
         }
         .radio-item input[type="radio"]:checked + .radio-mark::after {
@@ -1115,6 +1121,200 @@
             color: var(--red-badge);
         }
         .btn-danger:hover { background: #FFE1E1; }
+
+        /* ---- Upload Module (材料上传 section) ---- */
+        .upload-module {
+            margin-bottom: 16px;
+        }
+        .upload-module-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .upload-slot {
+            border: 2px dashed var(--gray-200);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            background: var(--gray-50);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            margin-bottom: 10px;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+        }
+        .upload-slot:hover {
+            border-color: var(--green-light);
+            background: rgba(114,208,204,0.03);
+        }
+        .upload-slot.drag-over {
+            border-color: var(--green-main);
+            background: rgba(114,208,204,0.08);
+            box-shadow: 0 0 0 3px rgba(114,208,204,0.15);
+        }
+        .upload-slot-placeholder {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray-400);
+            font-size: 13px;
+            width: 100%;
+        }
+        .upload-icon {
+            font-size: 22px;
+            color: var(--gray-300);
+            flex-shrink: 0;
+        }
+        .upload-slot-files {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+        }
+        .upload-slot.has-files .upload-slot-placeholder { display: none; }
+        .upload-file-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--gray-700);
+        }
+        .upload-file-chip i { color: var(--green-main); font-size: 14px; }
+        .upload-file-chip .remove-file {
+            cursor: pointer;
+            color: var(--gray-400);
+            margin-left: 2px;
+            font-size: 11px;
+        }
+        .upload-file-chip .remove-file:hover { color: var(--red-badge); }
+
+        /* ---- Recognition Checkbox Items ---- */
+        .recognition-check-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--gray-700);
+            user-select: none;
+        }
+        .recognition-check-item input[type="checkbox"] { display: none; }
+        .recognition-check-item .check-mark {
+            width: 16px; height: 16px;
+            border: 2px solid var(--gray-300);
+            border-radius: 3px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+        .recognition-check-item input[type="checkbox"]:checked + .check-mark {
+            background: #4283A3;
+            border-color: #4283A3;
+        }
+        .recognition-check-item input[type="checkbox"]:checked + .check-mark::after {
+            content: '\2713';
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .recognition-check-item input[type="checkbox"]:disabled + .check-mark {
+            background: var(--green-main);
+            border-color: var(--green-main);
+            opacity: 0.7;
+        }
+        .recognition-check-item input[type="checkbox"]:disabled + .check-mark::after {
+            content: '\2713';
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* ---- Recognition Process Panel ---- */
+        .recognition-process-panel {
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            background: var(--white);
+            overflow: hidden;
+            margin-top: 16px;
+        }
+        .recognition-process-panel.hidden { display: none; }
+        .recognition-process-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--gray-100);
+            background: var(--gray-50);
+        }
+        .recognition-process-body {
+            padding: 16px 18px;
+        }
+        .recognition-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .recognition-progress-fill {
+            height: 100%;
+            background: var(--green-main);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        .recognition-task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .recog-task-group {
+            border: 1px solid var(--gray-100);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        .recog-task-group-header {
+            padding: 8px 14px;
+            background: var(--gray-50);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        .recog-task-group-header .task-progress { font-weight: 400; color: var(--gray-500); }
+        .recog-file-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--gray-50);
+            font-size: 12.5px;
+            background: var(--white);
+        }
+        .recog-file-item:last-child { border-bottom: none; }
+        .recog-file-item .file-status {
+            width: 50px;
+            font-size: 11px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+        .recog-file-item .file-status.success { color: #16a34a; }
+        .recog-file-item .file-status.processing { color: var(--gold); }
+        .recog-file-item .file-status.waiting { color: var(--gray-400); }
+        .recog-file-item .file-icon { color: var(--green-main); flex-shrink: 0; font-size: 15px; }
+        .recog-file-item .file-name { flex: 1; color: var(--gray-700); }
+        .recog-file-item .file-actions { flex-shrink: 0; color: var(--gray-400); cursor: pointer; }
+        .recog-file-item .file-actions:hover { color: var(--gray-600); }
 
         /* Upload zone */
         .upload-zone {
@@ -2447,28 +2647,26 @@
                         </div>
                     </div>
                     <!-- 流程步骤指示器 (sticky悬浮) -->
-                    <div class="flow-card">
-                        <div class="flow-steps">
-                            <div class="flow-step active" id="fs-step1">
-                                <span class="dot">1</span> 业务信息同步与选择
-                            </div>
-                            <div class="flow-divider" id="fd1"></div>
-                            <div class="flow-step" id="fs-step2">
-                                <span class="dot">2</span> 材料上传
-                            </div>
-                            <div class="flow-divider" id="fd2"></div>
-                            <div class="flow-step" id="fs-step3">
-                                <span class="dot">3</span> 识别结果与初审
-                            </div>
-                            <div class="flow-divider" id="fd3"></div>
-                            <div class="flow-step" id="fs-step4">
-                                <span class="dot">4</span> 人为审核
-                            </div>
-                        </div>
+                    <div class="flow-steps-simple">
+                        <span class="flow-step-item active" id="fs-step1">
+                            <span class="dot">1</span> 业务信息同步与选择
+                        </span>
+                        <span class="flow-step-divider" id="fd1">›</span>
+                        <span class="flow-step-item" id="fs-step2">
+                            <span class="dot">2</span> 材料上传
+                        </span>
+                        <span class="flow-step-divider" id="fd2">›</span>
+                        <span class="flow-step-item" id="fs-step3">
+                            <span class="dot">3</span> 识别结果与初审
+                        </span>
+                        <span class="flow-step-divider" id="fd3">›</span>
+                        <span class="flow-step-item" id="fs-step4">
+                            <span class="dot">4</span> 人为审核
+                        </span>
                     </div>
 
                     <!-- 预识别匹配目录结果展示区域 (条件展示) -->
-                    <div class="sh-card hidden" id="preRecogResultCard" style="flex-shrink:0;border:1px solid var(--green-light);background:rgba(114,208,204,0.03);">
+                    <div class="sh-card hidden" id="preRecogResultCard" style="flex-shrink:0;background:var(--white);">
                         <div class="sh-card-header">
                             <h3 class="sh-card-title" style="display:flex;align-items:center;gap:8px;">
                                 <i class="fa-solid fa-check-circle" style="color:#43A8C6;"></i> 预识别匹配结果 · 绿识别目录
@@ -2493,88 +2691,56 @@
                             <i class="fa-solid fa-chevron-down step-toggle-arrow"></i>
                         </div>
                         <div class="step-panel-body">
-                            <div class="branch-notice info" style="margin-bottom:14px;">
-                                <i class="fa-solid fa-sync"></i>
-                                <span><strong>信贷系统自动同步：</strong>以下业务信息已从行内信贷系统存量业务数据中自动回填，无需手动录入。如需调整，请先在信贷系统中更新业务档案。</span>
+                        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--gray-100);">
+                            <h4 style="font-size:12.5px;font-weight:600;color:var(--gray-700);margin-bottom:14px;">业务判定问卷</h4>
+                            <div class="quiz-vertical">
+                                <!-- ① 是否为境外企业 -->
+                                <div class="quiz-row">
+                                    <label class="form-label">是否为境外企业</label>
+                                    <div class="radio-group" id="radioOverseas">
+                                        <label class="radio-item"><input type="radio" name="isOverseas" value="否" checked onchange="updateStep2Form()"><span class="radio-mark"></span> 否</label>
+                                        <label class="radio-item"><input type="radio" name="isOverseas" value="是" onchange="updateStep2Form()"><span class="radio-mark"></span> 是</label>
+                                    </div>
+                                </div>
+                                <!-- ② 借款企业类型 -->
+                                <div class="quiz-row">
+                                    <label class="form-label">借款企业类型</label>
+                                    <div class="radio-group" id="radioEntityType">
+                                        <label class="radio-item"><input type="radio" name="entityType" value="一般类企业(非特殊类企业)" checked onchange="updateStep2Form()"><span class="radio-mark"></span> 一般类企业(非特殊类企业)</label>
+                                        <label class="radio-item"><input type="radio" name="entityType" value="特殊类企业(融资租赁公司、保理公司、同业客户)" onchange="updateStep2Form()"><span class="radio-mark"></span> 特殊类企业(融资租赁公司、保理公司、同业客户)</label>
+                                    </div>
+                                </div>
+                                <!-- ③ 请选择贷款类型 -->
+                                <div class="quiz-row">
+                                    <label class="form-label">请选择贷款类型</label>
+                                    <div class="custom-select-wrap">
+                                        <select class="form-select" id="loanType" onchange="updateStep2Form()">
+                                            <option value="流动资金贷款" selected>流动资金贷款</option>
+                                            <option value="固定资产贷款">固定资产贷款</option>
+                                            <option value="项目贷款">项目贷款</option>
+                                            <option value="并购贷款">并购贷款</option>
+                                            <option value="融资租赁">融资租赁</option>
+                                        </select>
+                                        <i class="fa-solid fa-chevron-down select-arrow"></i>
+                                    </div>
+                                </div>
+                                <!-- ④ 是否有资金用途材料 -->
+                                <div class="quiz-row">
+                                    <label class="form-label">是否有资金用途材料</label>
+                                    <div class="radio-group" id="radioHasMaterial">
+                                        <label class="radio-item"><input type="radio" name="hasMaterial" value="是" checked onchange="updateStep2Form()"><span class="radio-mark"></span> 是</label>
+                                        <label class="radio-item"><input type="radio" name="hasMaterial" value="否" onchange="updateStep2Form()"><span class="radio-mark"></span> 否</label>
+                                    </div>
+                                </div>
+                                <!-- ⑤ 是否是置换类贷款 -->
+                                <div class="quiz-row">
+                                    <label class="form-label">是否是置换类贷款</label>
+                                    <div class="radio-group" id="radioIsRefinance">
+                                        <label class="radio-item"><input type="radio" name="isRefinance" value="是" checked onchange="updateStep2Form()"><span class="radio-mark"></span> 是</label>
+                                        <label class="radio-item"><input type="radio" name="isRefinance" value="否" onchange="updateStep2Form()"><span class="radio-mark"></span> 否</label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label">企业属地</label>
-                                    <input class="form-input" type="text" id="bizRegion" placeholder="完成客户信息同步后自动回填…" readonly style="background:var(--gray-50);color:var(--gray-700);cursor:default;">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">业务品种</label>
-                                    <input class="form-input" type="text" id="bizCategory" placeholder="完成客户信息同步后自动回填…" readonly style="background:var(--gray-50);color:var(--gray-700);cursor:default;">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">企业经营类型</label>
-                                    <input class="form-input" type="text" id="bizEntityType" placeholder="完成客户信息同步后自动回填…" readonly style="background:var(--gray-50);color:var(--gray-700);cursor:default;">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">所属行业</label>
-                                    <input class="form-input" type="text" id="bizIndustry" placeholder="完成客户信息同步后自动回填…" readonly style="background:var(--gray-50);color:var(--gray-700);cursor:default;">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">贷款投向</label>
-                                    <input class="form-input" type="text" id="bizLoanPurpose" placeholder="完成客户信息同步后自动回填…" readonly style="background:var(--gray-50);color:var(--gray-700);cursor:default;">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">贷款金额（万元）</label>
-                                    <input class="form-input" type="text" id="bizLoanAmount" placeholder="完成客户信息同步后自动回填…" readonly style="background:var(--gray-50);color:var(--gray-700);cursor:default;">
-                                </div>
-                            </div>
-
-                            <!-- 步骤2内嵌表单：业务判定问卷 -->
-                            <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--gray-100);">
-                                <h4 style="font-size:12.5px;font-weight:600;color:var(--gray-700);margin-bottom:14px;">业务判定问卷</h4>
-                                <div class="form-grid">
-                                    <!-- ① 是否为境外企业 -->
-                                    <div class="form-group">
-                                        <label class="form-label">是否为境外企业</label>
-                                        <div class="radio-group" id="radioOverseas">
-                                            <label class="radio-item"><input type="radio" name="isOverseas" value="否" checked onchange="updateStep2Form()"><span class="radio-mark"></span> 否</label>
-                                            <label class="radio-item"><input type="radio" name="isOverseas" value="是" onchange="updateStep2Form()"><span class="radio-mark"></span> 是</label>
-                                        </div>
-                                    </div>
-                                    <!-- ② 借款企业类型 -->
-                                    <div class="form-group">
-                                        <label class="form-label">借款企业类型</label>
-                                        <div class="radio-group" id="radioEntityType">
-                                            <label class="radio-item"><input type="radio" name="entityType" value="一般类企业(非特殊类企业)" checked onchange="updateStep2Form()"><span class="radio-mark"></span> 一般类企业(非特殊类企业)</label>
-                                            <label class="radio-item"><input type="radio" name="entityType" value="特殊类企业(融资租赁公司、保理公司、同业客户)" onchange="updateStep2Form()"><span class="radio-mark"></span> 特殊类企业(融资租赁公司、保理公司、同业客户)</label>
-                                        </div>
-                                    </div>
-                                    <!-- ③ 请选择贷款类型 -->
-                                    <div class="form-group">
-                                        <label class="form-label">请选择贷款类型</label>
-                                        <div class="custom-select-wrap">
-                                            <select class="form-select" id="loanType" onchange="updateStep2Form()">
-                                                <option value="流动资金贷款" selected>流动资金贷款</option>
-                                                <option value="固定资产贷款">固定资产贷款</option>
-                                                <option value="项目贷款">项目贷款</option>
-                                                <option value="并购贷款">并购贷款</option>
-                                                <option value="融资租赁">融资租赁</option>
-                                            </select>
-                                            <i class="fa-solid fa-chevron-down select-arrow"></i>
-                                        </div>
-                                    </div>
-                                    <!-- ④ 是否有资金用途材料 -->
-                                    <div class="form-group">
-                                        <label class="form-label">是否有资金用途材料</label>
-                                        <div class="radio-group" id="radioHasMaterial">
-                                            <label class="radio-item"><input type="radio" name="hasMaterial" value="是" checked onchange="updateStep2Form()"><span class="radio-mark"></span> 是</label>
-                                            <label class="radio-item"><input type="radio" name="hasMaterial" value="否" onchange="updateStep2Form()"><span class="radio-mark"></span> 否</label>
-                                        </div>
-                                    </div>
-                                    <!-- ⑤ 是否是置换类贷款 -->
-                                    <div class="form-group">
-                                        <label class="form-label">是否是置换类贷款</label>
-                                        <div class="radio-group" id="radioIsRefinance">
-                                            <label class="radio-item"><input type="radio" name="isRefinance" value="是" checked onchange="updateStep2Form()"><span class="radio-mark"></span> 是</label>
-                                            <label class="radio-item"><input type="radio" name="isRefinance" value="否" onchange="updateStep2Form()"><span class="radio-mark"></span> 否</label>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="branch-notice warn hidden" id="entityNotice">
                                 <i class="fa-solid fa-triangle-exclamation"></i>
@@ -2636,52 +2802,131 @@
                     <div class="step-panel locked" id="stepPanel3">
                         <div class="step-panel-header" onclick="clickStep3MaterialUpload()">
                             <span class="step-num">3</span>
-                            <h3>材料上传 <small style="font-weight:400;font-size:12px;color:var(--gray-500);">（根据业务品种自动匹配模板）</small></h3>
+                            <h3>材料上传</h3>
                             <i class="fa-solid fa-chevron-down step-toggle-arrow"></i>
                         </div>
                         <div class="step-panel-body">
-                            <!-- 系统根据业务品种自动提示需要上传的材料类型 -->
-                            <div class="material-alert info" id="materialHint">
-                                <i class="fa-solid fa-file-lines"></i>
-                                <div>
-                                    <strong id="materialHintTitle">请先完成业务品种选择</strong><br>
-                                    <span id="materialHintDetail">系统将根据您选择的业务品种自动匹配上传模板及所需材料清单</span>
-                                </div>
-                            </div>
-
-                            <div class="upload-zone" id="uploadZone" style="margin-top:14px;" onclick="document.getElementById('fileInput').click()">
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-                                <p><strong>点击上传</strong>或拖拽文件至此区域</p>
-                                <p class="upload-formats">支持 PDF · Word · Excel · 图片 (PNG/JPG) 格式，上传后自动OCR解析</p>
-                            </div>
-                            <input type="file" id="fileInput" multiple style="display:none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" onchange="handleFileUpload(this)">
-
-                            <!-- 已上传文件列表 -->
-                            <div class="ocr-result-panel hidden" id="uploadedFilesPanel">
-                                <h4><i class="fa-solid fa-check-circle"></i> 已上传文件与OCR提取结果</h4>
-                                <div id="uploadedFilesList" class="space-y-2"></div>
-                            </div>
-
-                            <!-- OCR提取通用要素 -->
-                            <div class="ocr-result-panel hidden" id="ocrResultPanel">
-                                <h4><i class="fa-solid fa-microchip"></i> OCR自动提取要素</h4>
-                                <div class="ocr-extract-item"><span class="ocr-label">项目建设内容：</span><span class="ocr-value" id="ocrContent">—</span></div>
-                                <div class="ocr-extract-item"><span class="ocr-label">资金用途：</span><span class="ocr-value" id="ocrFundUse">—</span></div>
-                                <div class="ocr-extract-item"><span class="ocr-label">执行环保/能效标准：</span><span class="ocr-value" id="ocrEnvStandard">—</span></div>
-                                <div class="ocr-extract-item"><span class="ocr-label">预期环境效益：</span><span class="ocr-value" id="ocrEnvBenefit">—</span></div>
-                                <div class="ocr-extract-item"><span class="ocr-label">甲方（买方）：</span><span class="ocr-value" id="ocrPartyA">—</span></div>
-                                <div class="ocr-extract-item"><span class="ocr-label">乙方（卖方）：</span><span class="ocr-value" id="ocrPartyB">—</span></div>
-                                <div class="ocr-extract-item"><span class="ocr-label">合同标的：</span><span class="ocr-value" id="ocrSubject">—</span></div>
-
-                                <div class="upload-hint" style="margin-top:12px;">
-                                    <i class="fa-solid fa-lightbulb"></i>
-                                    <div>
-                                        <strong>身份判定规则：</strong><br>
-                                        · 贷款主体为买方 → 业务属于绿色设备建设/运营<br>
-                                        · 贷款主体为卖方 → 业务属于绿色设备制造/贸易<br>
-                                        <span style="font-size:11.5px;color:var(--gray-400);">此判定逻辑已写入大模型识别规则，作为目录匹配核心判断依据。</span>
+                            <!-- 模块1: 绿色贷款证明资料 -->
+                            <div class="upload-module">
+                                <h4 class="upload-module-title">绿色贷款证明资料</h4>
+                                <div class="upload-slot" id="uploadSlot1" onclick="triggerFileUpload('fileInput1')" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'fileInput1')">
+                                    <div class="upload-slot-placeholder">
+                                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                        <span>项目可行性研究报告 / 项目建设内容相关文件 / 项目环境影响评价批复</span>
                                     </div>
+                                    <div class="upload-slot-files" id="slotFiles1"></div>
                                 </div>
+                                <input type="file" id="fileInput1" style="display:none;" accept=".pdf,.png,.jpg,.jpeg,.zip,.doc,.docx,.xls,.xlsx" multiple onchange="handleSlotUpload(this, 'slotFiles1')">
+                                <div class="upload-slot" id="uploadSlot2" onclick="triggerFileUpload('fileInput2')" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'fileInput2')">
+                                    <div class="upload-slot-placeholder">
+                                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                        <span>绿色建筑、装配式建筑、超低能耗建筑相关证明材料</span>
+                                    </div>
+                                    <div class="upload-slot-files" id="slotFiles2"></div>
+                                </div>
+                                <input type="file" id="fileInput2" style="display:none;" accept=".pdf,.png,.jpg,.jpeg,.zip,.doc,.docx,.xls,.xlsx" multiple onchange="handleSlotUpload(this, 'slotFiles2')">
+                                <div class="upload-slot" id="uploadSlot3" onclick="triggerFileUpload('fileInput3')" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'fileInput3')">
+                                    <div class="upload-slot-placeholder">
+                                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                        <span>其他材料</span>
+                                    </div>
+                                    <div class="upload-slot-files" id="slotFiles3"></div>
+                                </div>
+                                <input type="file" id="fileInput3" style="display:none;" accept=".pdf,.png,.jpg,.jpeg,.zip,.doc,.docx,.xls,.xlsx" multiple onchange="handleSlotUpload(this, 'slotFiles3')">
+                            </div>
+
+                            <!-- 模块2: 绿色融资占比证明材料 -->
+                            <div class="upload-module">
+                                <h4 class="upload-module-title">绿色融资占比证明材料</h4>
+                                <div class="upload-slot" id="uploadSlot4" onclick="triggerFileUpload('fileInput4')" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'fileInput4')">
+                                    <div class="upload-slot-placeholder">
+                                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                    </div>
+                                    <div class="upload-slot-files" id="slotFiles4"></div>
+                                </div>
+                                <input type="file" id="fileInput4" style="display:none;" accept=".pdf,.png,.jpg,.jpeg,.zip,.doc,.docx,.xls,.xlsx" multiple onchange="handleSlotUpload(this, 'slotFiles4')">
+                            </div>
+
+                            <!-- 模块3: 环境效益证明材料 -->
+                            <div class="upload-module">
+                                <h4 class="upload-module-title">环境效益证明材料</h4>
+                                <div class="upload-slot" id="uploadSlot5" onclick="triggerFileUpload('fileInput5')" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'fileInput5')">
+                                    <div class="upload-slot-placeholder">
+                                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                    </div>
+                                    <div class="upload-slot-files" id="slotFiles5"></div>
+                                </div>
+                                <input type="file" id="fileInput5" style="display:none;" accept=".pdf,.png,.jpg,.jpeg,.zip,.doc,.docx,.xls,.xlsx" multiple onchange="handleSlotUpload(this, 'slotFiles5')">
+                            </div>
+
+                            <!-- AI识别按钮 -->
+                            <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                                <button class="btn btn-primary" id="btnAiRecognize" disabled onclick="openRecognitionDialog()">
+                                    AI 识别
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 识别内容选择弹窗 -->
+                    <div class="detail-overlay" id="recognitionDialogOverlay" onclick="if(event.target===this)closeRecognitionDialog()">
+                        <div class="detail-panel" style="width:520px;">
+                            <div class="detail-panel-header">
+                                <h3>识别内容</h3>
+                                <button style="background:none;border:none;font-size:16px;color:var(--gray-400);cursor:pointer;" onclick="closeRecognitionDialog()">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <div class="detail-panel-body" style="display:flex;flex-direction:column;gap:16px;">
+                                <p style="font-size:13px;color:var(--gray-500);line-height:1.6;">默认输出绿贷识别结果，可选择增加"绿色融资占比识别"、"环境效益测算"输出项，选择多项会增加等待时长。</p>
+                                <div style="display:flex;flex-direction:column;gap:10px;">
+                                    <label class="recognition-check-item">
+                                        <input type="checkbox" checked disabled>
+                                        <span class="check-mark"></span>
+                                        <span>绿贷识别</span>
+                                    </label>
+                                    <label class="recognition-check-item">
+                                        <input type="checkbox" id="chkFinRatio" onchange="updateRecognitionChecks()">
+                                        <span class="check-mark"></span>
+                                        <span>绿色融资占比识别</span>
+                                    </label>
+                                    <label class="recognition-check-item">
+                                        <input type="checkbox" id="chkEnvBenefit" onchange="updateRecognitionChecks()">
+                                        <span class="check-mark"></span>
+                                        <span>环境效益测算</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="detail-panel-footer" style="justify-content:flex-end;gap:10px;">
+                                <button class="btn btn-ghost" onclick="closeRecognitionDialog()">取消</button>
+                                <button class="btn btn-primary" onclick="confirmRecognition()">确认</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 识别过程面板（隐藏在材料上传区域内） -->
+                    <div class="recognition-process-panel hidden" id="recognitionProcessPanel">
+                        <div class="recognition-process-header">
+                            <div style="display:flex;align-items:center;justify-content:space-between;">
+                                <h4 style="font-size:14px;font-weight:700;color:var(--gray-800);">识别结果</h4>
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <button class="btn btn-danger" style="font-size:11.5px;padding:5px 12px;" onclick="cancelRecognition()">取消识别</button>
+                                    <button style="background:none;border:none;font-size:14px;color:var(--gray-400);cursor:pointer;padding:4px;" onclick="toggleRecognitionPanel()" title="收起">▲</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recognition-process-body">
+                            <!-- 状态信息 -->
+                            <div style="margin-bottom:12px;">
+                                <span style="font-size:12.5px;color:var(--gray-600);" id="recogStatusText">识别过程（已耗时 00 分 00 秒，当前识别进度 0%）</span>
+                                <div class="recognition-progress-bar">
+                                    <div class="recognition-progress-fill" id="recogProgressFill" style="width:0%;"></div>
+                                </div>
+                            </div>
+                            <p style="font-size:12px;color:var(--gray-500);margin-bottom:14px;" id="recogStatusHint">好的，根据用户需要，将上传的证明材料进行 OCR 识别，识别内容包括绿贷识别等。</p>
+                            <!-- 识别任务列表 -->
+                            <div class="recognition-task-list" id="recognitionTaskList">
+                                <!-- dynamically populated -->
                             </div>
                         </div>
                     </div>
@@ -5507,38 +5752,247 @@
             }
             panel.classList.remove('locked');
             panel.classList.add('expanded');
+            updateAiRecognizeBtn();
+        };
 
-            // Populate uploaded files
-            var filesPanel = document.getElementById('uploadedFilesPanel');
-            var list = document.getElementById('uploadedFilesList');
-            filesPanel.classList.remove('hidden');
-            list.innerHTML = '';
-            var mockFiles = [
-                { name: '遂溪光伏项目可行性研究报告.pdf', icon: 'fa-file-pdf' },
-                { name: '环评批复文件.pdf', icon: 'fa-file-pdf' },
-                { name: '能效等级证书.pdf', icon: 'fa-file-pdf' }
-            ];
-            mockFiles.forEach(function (f) {
-                var itemDiv = document.createElement('div');
-                itemDiv.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--gray-50);border-radius:6px;margin-bottom:6px;font-size:13px;';
-                itemDiv.innerHTML = '<span><i class="fa-solid ' + f.icon + '" style="margin-right:8px;color:var(--green-main);"></i>' + f.name + ' <span style="color:var(--gray-400);font-size:11px;">(已OCR解析)</span></span><span class="badge badge-green">OCR解析完成</span>';
-                list.appendChild(itemDiv);
+        // ---- Upload slot helpers ----
+        window.triggerFileUpload = function (inputId) {
+            document.getElementById(inputId).click();
+        };
+        window.handleDragOver = function (e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        };
+        window.handleDragLeave = function (e) {
+            e.currentTarget.classList.remove('drag-over');
+        };
+        window.handleDrop = function (e, inputId) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            var files = e.dataTransfer.files;
+            if (files.length === 0) return;
+            var input = document.getElementById(inputId);
+            var dt = new DataTransfer();
+            for (var i = 0; i < files.length; i++) { dt.items.add(files[i]); }
+            input.files = dt.files;
+            handleSlotUpload(input, inputId === 'fileInput1' ? 'slotFiles1' :
+                inputId === 'fileInput2' ? 'slotFiles2' :
+                inputId === 'fileInput3' ? 'slotFiles3' :
+                inputId === 'fileInput4' ? 'slotFiles4' : 'slotFiles5');
+        };
+
+        var allUploadedFiles = {}; // slotId -> [{name, icon}]
+
+        window.handleSlotUpload = function (input, slotId) {
+            var files = input.files;
+            if (!files || files.length === 0) return;
+            if (!allUploadedFiles[slotId]) allUploadedFiles[slotId] = [];
+            var slot = document.getElementById(slotId);
+            var parentSlot = slot.parentElement;
+
+            for (var i = 0; i < files.length; i++) {
+                var f = files[i];
+                var icon = 'fa-file-lines';
+                if (f.name.endsWith('.pdf')) icon = 'fa-file-pdf';
+                else if (f.name.match(/\.(xls|xlsx)$/)) icon = 'fa-file-excel';
+                else if (f.name.match(/\.(png|jpg|jpeg)$/)) icon = 'fa-file-image';
+                else if (f.name.match(/\.zip$/)) icon = 'fa-file-zipper';
+                allUploadedFiles[slotId].push({ name: f.name, icon: icon });
+            }
+
+            // Render file chips
+            slot.innerHTML = allUploadedFiles[slotId].map(function (f, idx) {
+                return '<span class="upload-file-chip"><i class="fa-solid ' + f.icon + '"></i>' + escapeHtml(f.name) + '<span class="remove-file" onclick="event.stopPropagation();removeSlotFile(\'' + slotId + '\',' + idx + ')">×</span></span>';
+            }).join('');
+
+            if (allUploadedFiles[slotId].length > 0) {
+                parentSlot.classList.add('has-files');
+            }
+
+            updateAiRecognizeBtn();
+        };
+
+        window.removeSlotFile = function (slotId, idx) {
+            allUploadedFiles[slotId].splice(idx, 1);
+            var slot = document.getElementById(slotId);
+            var parentSlot = slot.parentElement;
+            slot.innerHTML = (allUploadedFiles[slotId] || []).map(function (f, idx2) {
+                return '<span class="upload-file-chip"><i class="fa-solid ' + f.icon + '"></i>' + escapeHtml(f.name) + '<span class="remove-file" onclick="event.stopPropagation();removeSlotFile(\'' + slotId + '\',' + idx2 + ')">×</span></span>';
+            }).join('');
+            if (allUploadedFiles[slotId].length === 0) {
+                parentSlot.classList.remove('has-files');
+            }
+            updateAiRecognizeBtn();
+        };
+
+        window.updateAiRecognizeBtn = function () {
+            var btn = document.getElementById('btnAiRecognize');
+            if (!btn) return;
+            var totalFiles = 0;
+            for (var k in allUploadedFiles) {
+                if (allUploadedFiles.hasOwnProperty(k)) {
+                    totalFiles += allUploadedFiles[k].length;
+                }
+            }
+            btn.disabled = (totalFiles === 0);
+        };
+
+        // ---- Recognition Dialog ----
+        window.openRecognitionDialog = function () {
+            document.getElementById('recognitionDialogOverlay').classList.add('open');
+        };
+        window.closeRecognitionDialog = function () {
+            document.getElementById('recognitionDialogOverlay').classList.remove('open');
+        };
+        window.updateRecognitionChecks = function () {
+            // no-op; UI state tracked by checkboxes directly
+        };
+        window.confirmRecognition = function () {
+            closeRecognitionDialog();
+            startRecognitionProcess();
+        };
+
+        var recogTimerInterval = null;
+        var recogElapsedSeconds = 0;
+        var recogProgress = 0;
+
+        window.startRecognitionProcess = function () {
+            var panel = document.getElementById('recognitionProcessPanel');
+            panel.classList.remove('hidden');
+
+            // Collect all uploaded files
+            var allFiles = [];
+            for (var k in allUploadedFiles) {
+                if (allUploadedFiles.hasOwnProperty(k)) {
+                    allFiles = allFiles.concat(allUploadedFiles[k]);
+                }
+            }
+
+            var chkFinRatio = document.getElementById('chkFinRatio').checked;
+            var chkEnvBenefit = document.getElementById('chkEnvBenefit').checked;
+            var scopeDesc = '绿贷识别';
+            if (chkFinRatio) scopeDesc += '、绿色融资占比识别';
+            if (chkEnvBenefit) scopeDesc += '、环境效益测算';
+
+            document.getElementById('recogStatusHint').textContent = '好的，根据用户需要，将上传的 ' + allFiles.length + ' 个证明材料进行 OCR 识别，识别内容包括' + scopeDesc + '等。';
+
+            // Reset state
+            recogElapsedSeconds = 0;
+            recogProgress = 0;
+            if (recogTimerInterval) clearInterval(recogTimerInterval);
+
+            // Build task list
+            var taskList = document.getElementById('recognitionTaskList');
+            var html = '';
+
+            // OCR group
+            html += '<div class="recog-task-group" id="taskGroupOCR">';
+            html += '<div class="recog-task-group-header"><span>OCR 识别中···</span><span class="task-progress" id="ocrProgress">0%</span></div>';
+            allFiles.forEach(function (f, i) {
+                html += '<div class="recog-file-item" id="ocrFile' + i + '">';
+                html += '<span class="file-status waiting">等待</span>';
+                html += '<i class="fa-solid ' + f.icon + ' file-icon"></i>';
+                html += '<span class="file-name">' + escapeHtml(f.name) + '</span>';
+                html += '<span class="file-actions"><i class="fa-solid fa-ellipsis"></i></span>';
+                html += '</div>';
             });
+            html += '</div>';
 
-            // Populate OCR results
-            var ocrPanel = document.getElementById('ocrResultPanel');
-            ocrPanel.classList.remove('hidden');
-            document.getElementById('ocrContent').textContent = '遂溪县粤水电能源有限公司100MW光伏发电项目';
-            document.getElementById('ocrFundUse').textContent = '用于新建太阳能光伏发电站，购置光伏组件、逆变器及配套设备';
-            document.getElementById('ocrEnvStandard').textContent = '产品能效达到GB 19761-2020一级能效标准';
-            document.getElementById('ocrEnvBenefit').textContent = '年发电量约1.2亿度，减少CO₂排放约9.4万吨';
-            document.getElementById('ocrPartyA').textContent = '遂溪县粤水电能源有限公司（买方/贷款主体）';
-            document.getElementById('ocrPartyB').textContent = '常州光伏设备有限公司（卖方/设备供应商）';
-            document.getElementById('ocrSubject').textContent = '高效光伏组件及逆变器成套设备';
+            // Key info group
+            html += '<div class="recog-task-group" id="taskGroupKeyInfo">';
+            html += '<div class="recog-task-group-header"><span>关键信息获取中···</span><span class="task-progress" id="keyInfoProgress">0%</span></div>';
+            html += '</div>';
 
-            // Unlock next step
-            updateFlowStep(3);
-            document.getElementById('stepPanel4').classList.remove('locked');
+            // LLM group
+            html += '<div class="recog-task-group" id="taskGroupLLM">';
+            html += '<div class="recog-task-group-header"><span>大语言模型分析中···</span><span class="task-progress" id="llmProgress">0%</span></div>';
+            html += '</div>';
+
+            // Done group
+            html += '<div class="recog-task-group" id="taskGroupDone">';
+            html += '<div class="recog-task-group-header"><span>分析完成（待触发）</span><span class="task-progress"></span></div>';
+            html += '</div>';
+
+            taskList.innerHTML = html;
+
+            // Start timer and progress simulation (fast pace)
+            recogTimerInterval = setInterval(function () {
+                recogElapsedSeconds += 4; // faster time display
+                var mins = Math.floor(recogElapsedSeconds / 60);
+                var secs = recogElapsedSeconds % 60;
+                recogProgress = Math.min(99, recogProgress + 7);
+
+                document.getElementById('recogStatusText').textContent = '识别过程（已耗时 ' +
+                    String(mins).padStart(2, '0') + ' 分 ' + String(secs).padStart(2, '0') +
+                    ' 秒，当前识别进度 ' + Math.floor(recogProgress) + '%）';
+                document.getElementById('recogProgressFill').style.width = recogProgress + '%';
+
+                // Simulate sub-task progress
+                var ocrPct = Math.min(100, recogProgress * 1.4);
+                var keyPct = Math.min(100, Math.max(0, recogProgress - 25));
+                var llmPct = Math.min(100, Math.max(0, recogProgress - 55));
+
+                var ocrEl = document.getElementById('ocrProgress');
+                if (ocrEl) ocrEl.textContent = Math.floor(ocrPct) + '%';
+
+                // Mark OCR files as success fast
+                if (recogProgress > 8) {
+                    var ct = Math.min(allFiles.length, Math.floor((recogProgress) / 7));
+                    for (var fi = 0; fi < ct; fi++) {
+                        var el = document.getElementById('ocrFile' + fi);
+                        if (el) {
+                            var statusEl = el.querySelector('.file-status');
+                            if (statusEl) { statusEl.textContent = '成功'; statusEl.className = 'file-status success'; }
+                        }
+                    }
+                }
+
+                var keyEl = document.getElementById('keyInfoProgress');
+                if (keyEl) keyEl.textContent = Math.floor(keyPct) + '%';
+                var llmEl = document.getElementById('llmProgress');
+                if (llmEl) llmEl.textContent = Math.floor(llmPct) + '%';
+
+                if (recogProgress >= 99) {
+                    clearInterval(recogTimerInterval);
+                    recogTimerInterval = null;
+                    document.getElementById('recogStatusText').textContent = '识别过程（已完成，总耗时 ' +
+                        String(mins).padStart(2, '0') + ' 分 ' + String(secs).padStart(2, '0') + ' 秒）';
+                    document.getElementById('recogProgressFill').style.width = '100%';
+                    if (ocrEl) ocrEl.textContent = '100%';
+                    if (keyEl) keyEl.textContent = '100%';
+                    if (llmEl) llmEl.textContent = '100%';
+                    // Mark remaining files as success
+                    for (var fj = 0; fj < allFiles.length; fj++) {
+                        var el2 = document.getElementById('ocrFile' + fj);
+                        if (el2) {
+                            var st = el2.querySelector('.file-status');
+                            if (st) { st.textContent = '成功'; st.className = 'file-status success'; }
+                        }
+                    }
+                }
+            }, 400);
+        };
+
+        window.cancelRecognition = function () {
+            if (recogTimerInterval) clearInterval(recogTimerInterval);
+            recogTimerInterval = null;
+            var panel = document.getElementById('recognitionProcessPanel');
+            panel.classList.add('hidden');
+            document.getElementById('recogProgressFill').style.width = '0%';
+            recogElapsedSeconds = 0;
+            recogProgress = 0;
+            document.getElementById('recogStatusText').textContent = '识别过程（已耗时 00 分 00 秒，当前识别进度 0%）';
+        };
+
+        window.toggleRecognitionPanel = function () {
+            var body = document.querySelector('.recognition-process-body');
+            if (body) {
+                if (body.style.display === 'none') {
+                    body.style.display = '';
+                } else {
+                    body.style.display = 'none';
+                }
+            }
         };
 
         // ===================== Step 4 Click: 识别结果与初审 =====================
@@ -5584,14 +6038,7 @@
             if (btn) { btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 正在从信贷系统同步…'; btn.disabled = true; }
 
             setTimeout(function () {
-                // Update left panel with synced data
-                document.getElementById('bizRegion').value = '境内';
-                document.getElementById('bizCategory').value = '固定资产贷款';
-                document.getElementById('bizEntityType').value = '一般类企业(非特殊类企业)';
-                document.getElementById('bizIndustry').value = '电力、热力生产和供应业';
-                document.getElementById('bizLoanPurpose').value = '太阳能发电项目';
-                document.getElementById('bizLoanAmount').value = '5,000';
-
+                // Update left panel with synced data (form inputs removed, values now silent)
                 // Update client profile sidebar
                 document.getElementById('profileName').textContent = syncedName;
                 document.getElementById('profileCreditCode').textContent = syncedCode;
@@ -5689,19 +6136,6 @@
         };
 
         window.confirmStep2 = function () {
-            var regionEl = document.getElementById('bizRegion');
-            var categoryEl = document.getElementById('bizCategory');
-            var entityTypeEl = document.getElementById('bizEntityType');
-
-            // For readonly sync fields, check if they've been populated
-            var region = regionEl.value;
-            var category = categoryEl.value;
-            var entityType = entityTypeEl.value;
-
-            if (!region || !category || !entityType || region.indexOf('自动回填') !== -1 || category.indexOf('自动回填') !== -1) {
-                return;
-            }
-
             // Update flow
             updateFlowStep(2);
 
@@ -5715,15 +6149,7 @@
             // Unlock Step 3 and auto-expand
             document.getElementById('stepPanel3').classList.remove('locked');
             expandStepPanel('stepPanel3');
-
-            // Enable pre-recognition trigger
-            document.getElementById('triggerPreRecogBtn').disabled = false;
-
-            // Update material hint
-            var hintTitle = document.getElementById('materialHintTitle');
-            var hintDetail = document.getElementById('materialHintDetail');
-            hintTitle.textContent = '已选择业务品种：固定资产贷款';
-            hintDetail.textContent = '请上传项目可行性研究报告、环评批复、能效等级证书。系统将使用项目固贷模板进行OCR解析。';
+            updateAiRecognizeBtn();
         };
 
         function updateFlowStep(step) {
@@ -5731,11 +6157,11 @@
                 var fs = document.getElementById('fs-step' + i);
                 if (!fs) continue;
                 if (i < step) {
-                    fs.className = 'flow-step done';
+                    fs.className = 'flow-step-item done';
                 } else if (i === step) {
-                    fs.className = 'flow-step active';
+                    fs.className = 'flow-step-item active';
                 } else {
-                    fs.className = 'flow-step';
+                    fs.className = 'flow-step-item';
                 }
             }
             for (var j = 1; j <= 4; j++) {
@@ -5789,60 +6215,14 @@
             document.getElementById('missingMaterialText').textContent = '该业务需重点上传能效等级证书、产品检测报告。缺少关键材料将导致识别结果不准确。';
         });
 
-        // ===================== File Upload =====================
+        // ===================== Legacy File Upload (保留兼容, not used in new UI) =====================
         window.handleFileUpload = function (input) {
-            var files = input.files;
-            if (!files || files.length === 0) return;
-
-            var panel = document.getElementById('uploadedFilesPanel');
-            var list = document.getElementById('uploadedFilesList');
-            panel.classList.remove('hidden');
-            list.innerHTML = '';
-
-            for (var i = 0; i < files.length; i++) {
-                var f = files[i];
-                var itemDiv = document.createElement('div');
-                itemDiv.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--gray-50);border-radius:6px;margin-bottom:6px;font-size:13px;';
-                var icon = 'fa-file-lines';
-                if (f.name.endsWith('.pdf')) icon = 'fa-file-pdf';
-                else if (f.name.match(/\.(xls|xlsx)$/)) icon = 'fa-file-excel';
-                else if (f.name.match(/\.(png|jpg|jpeg)$/)) icon = 'fa-file-image';
-                itemDiv.innerHTML = '<span><i class="fa-solid ' + icon + '" style="margin-right:8px;color:var(--green-main);"></i>' + f.name + ' <span style="color:var(--gray-400);font-size:11px;">(' + formatFileSize(f.size) + ')</span></span><span class="badge badge-green">OCR解析完成</span>';
-                list.appendChild(itemDiv);
-            }
-
-            // Show OCR results
-            var ocrPanel = document.getElementById('ocrResultPanel');
-            ocrPanel.classList.remove('hidden');
-            document.getElementById('ocrContent').textContent = '遂溪县粤水电能源有限公司100MW光伏发电项目';
-            document.getElementById('ocrFundUse').textContent = '用于新建太阳能光伏发电站，购置光伏组件、逆变器及配套设备';
-            document.getElementById('ocrEnvStandard').textContent = '产品能效达到GB 19761-2020一级能效标准';
-            document.getElementById('ocrEnvBenefit').textContent = '年发电量约1.2亿度，减少CO₂排放约9.4万吨';
-            document.getElementById('ocrPartyA').textContent = '遂溪县粤水电能源有限公司（买方/贷款主体）';
-            document.getElementById('ocrPartyB').textContent = '常州光伏设备有限公司（卖方/设备供应商）';
-            document.getElementById('ocrSubject').textContent = '高效光伏组件及逆变器成套设备';
-
-            // Unlock Step 4 and auto-expand
-            updateFlowStep(3);
-            document.getElementById('stepPanel4').classList.remove('locked');
-            expandStepPanel('stepPanel4');
-
-            // Show AI result
-            setTimeout(function () {
-                showAiResult();
-            }, 500);
+            // No-op: upload now handled by slot-based system
         };
-
-        function formatFileSize(bytes) {
-            if (bytes < 1024) return bytes + ' B';
-            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-            return (bytes / 1048576).toFixed(1) + ' MB';
-        }
 
         function showAiResult() {
             var resultArea = document.getElementById('aiResultArea');
-            var category = document.getElementById('bizCategory').value;
-            var isBuyer = true; // loan party is buyer (equipment builder/operator)
+            var isBuyer = true; // loan party is buyer
 
             resultArea.style.textAlign = 'left';
             resultArea.style.padding = '20px';
