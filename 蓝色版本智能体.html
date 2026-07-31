@@ -1374,38 +1374,6 @@
         }
         .biz-material-item .file-icon { color: var(--green-main); font-size: 13px; flex-shrink: 0; }
         .biz-material-item .file-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-        /* Collapsible group checkmark */
-        .biz-material-group-header .checkmark-icon {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 14px; height: 14px; border: 2px solid var(--gray-300); border-radius: 2px;
-            font-size: 10px; color: transparent; margin-right: 4px; transition: all 0.15s;
-        }
-        .biz-material-group-header.expanded-check .checkmark-icon {
-            background: var(--green-main); border-color: var(--green-main); color: #fff;
-        }
-
-        .biz-material-header-toolbar .download-btn:hover { color: var(--green-mid); background: var(--green-pale); }
-
-        .download-all-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--green-mid);
-            background: var(--green-pale);
-            border: 1px solid var(--green-light);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .download-all-btn:hover {
-            background: rgba(114,208,204,0.2);
-            color: var(--green-mid);
-        }
-
         .biz-material-preview {
             flex: 1;
             display: flex;
@@ -3107,14 +3075,9 @@
                         <div class="detail-panel" style="width:960px;max-height:85vh;">
                             <div class="detail-panel-header">
                                 <h3>业务资料</h3>
-                                <div style="display:flex;align-items:center;gap:10px;">
-                                    <button class="download-all-btn" id="btnDownloadAll" title="下载全部文件" onclick="downloadAllBizFiles()">
-                                        <i class="fa-solid fa-download"></i> 下载全部文件
-                                    </button>
-                                    <button style="background:none;border:none;font-size:16px;color:var(--gray-400);cursor:pointer;" onclick="closeBizMaterialDialog()">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
+                                <button style="background:none;border:none;font-size:16px;color:var(--gray-400);cursor:pointer;" onclick="closeBizMaterialDialog()">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
                             </div>
                             <div class="detail-panel-body" style="display:flex;gap:0;padding:0;overflow:hidden;">
                                 <!-- 左侧：文件分类导航栏 -->
@@ -6295,9 +6258,6 @@
                 var collapsible = isCollapsible[g];
                 html += '<div class="biz-material-group' + (collapsible ? '' : '') + '" data-group="' + escapeHtml(g) + '">';
                 html += '<div class="biz-material-group-header" onclick="toggleBizMaterialGroup(this)" style="cursor:pointer;">';
-                if (collapsible) {
-                    html += '<span class="checkmark-icon">✓</span>';
-                }
                 html += '<span>' + escapeHtml(g) + '</span>';
                 if (collapsible) {
                     html += '<span class="collapse-arrow" style="margin-left:auto;">▼</span>';
@@ -6319,12 +6279,6 @@
         window.toggleBizMaterialGroup = function (header) {
             var group = header.parentElement;
             group.classList.toggle('collapsed');
-            // Animate checkmark
-            if (!group.classList.contains('collapsed')) {
-                header.classList.add('expanded-check');
-            } else {
-                header.classList.remove('expanded-check');
-            }
         };
 
         window.selectBizFile = function (fileId) {
@@ -6366,7 +6320,7 @@
 
         window.downloadAllBizFiles = function () {
             var fileNames = bizMaterialFiles.map(function (f) { return f.name; });
-            alert('正在打包下载 ' + fileNames.length + ' 个文件：\n\n' + fileNames.join('\n'));
+            // Simulated bulk download
         };
 
         // ===================== Step 4 Click: 识别结果与初审 =====================
