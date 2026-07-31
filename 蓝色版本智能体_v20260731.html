@@ -1316,6 +1316,144 @@
         .recog-file-item .file-actions { flex-shrink: 0; color: var(--gray-400); cursor: pointer; }
         .recog-file-item .file-actions:hover { color: var(--gray-600); }
 
+        /* ---- Biz Material Dialog ---- */
+        .biz-material-sidebar {
+            width: 280px;
+            min-width: 280px;
+            border-right: 1px solid var(--gray-200);
+            background: var(--gray-50);
+            overflow-y: auto;
+            max-height: 65vh;
+            padding: 12px 0;
+        }
+        .biz-material-group {
+            margin-bottom: 2px;
+        }
+        .biz-material-group-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--gray-700);
+            cursor: pointer;
+            user-select: none;
+        }
+        .biz-material-group-header .collapse-arrow {
+            font-size: 9px;
+            color: var(--gray-400);
+            transition: transform 0.2s;
+            width: 12px;
+            text-align: center;
+        }
+        .biz-material-group.collapsed .collapse-arrow { transform: rotate(-90deg); }
+        .biz-material-group.collapsed .biz-material-items { display: none; }
+        .biz-material-items {
+            display: flex;
+            flex-direction: column;
+        }
+        .biz-material-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px 7px 28px;
+            font-size: 12px;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: background 0.1s;
+            border: 2px solid transparent;
+            border-radius: 0;
+        }
+        .biz-material-item:hover { background: rgba(114,208,204,0.06); }
+        .biz-material-item.active {
+            background: rgba(255, 225, 225, 0.3);
+            border-color: var(--red-badge);
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+        .biz-material-item .file-icon { color: var(--green-main); font-size: 13px; flex-shrink: 0; }
+        .biz-material-item .file-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .biz-material-preview {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .biz-preview-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0 16px;
+            background: var(--white);
+        }
+        .biz-preview-tab {
+            padding: 10px 18px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--gray-500);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .biz-preview-tab:hover { color: var(--gray-700); }
+        .biz-preview-tab.active {
+            color: var(--green-mid);
+            border-bottom-color: var(--green-mid);
+            font-weight: 600;
+        }
+        .biz-preview-tab.disabled-tab,
+        .biz-preview-tab:disabled {
+            color: var(--gray-300);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .biz-preview-canvas {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--gray-50);
+            min-height: 350px;
+        }
+        .biz-pdf-preview {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            padding: 30px 24px;
+            max-width: 520px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-sm);
+        }
+        .pdf-mock-header {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+        .pdf-mock-body {
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+        .pdf-mock-body p { margin-bottom: 8px; }
+        .markdown-mock-text {
+            font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+            font-size: 12px;
+            color: var(--gray-700);
+            line-height: 1.7;
+            white-space: pre-wrap;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            padding: 20px;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
         /* Upload zone */
         .upload-zone {
             border: 2px dashed var(--gray-200);
@@ -2927,6 +3065,66 @@
                             <!-- 识别任务列表 -->
                             <div class="recognition-task-list" id="recognitionTaskList">
                                 <!-- dynamically populated -->
+                            </div>
+                            <!-- 查看详情按钮（识别完成后展示） -->
+                            <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                                <button class="btn btn-outline hidden" id="btnViewDetail" onclick="openBizMaterialDialog()">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 业务资料弹窗（查看详情） -->
+                    <div class="detail-overlay" id="bizMaterialOverlay" onclick="if(event.target===this)closeBizMaterialDialog()">
+                        <div class="detail-panel" style="width:960px;max-height:85vh;">
+                            <div class="detail-panel-header">
+                                <h3>业务资料</h3>
+                                <button style="background:none;border:none;font-size:16px;color:var(--gray-400);cursor:pointer;" onclick="closeBizMaterialDialog()">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <div class="detail-panel-body" style="display:flex;gap:0;padding:0;overflow:hidden;">
+                                <!-- 左侧：文件分类导航栏 -->
+                                <div class="biz-material-sidebar" id="bizMaterialSidebar">
+                                    <!-- dynamically populated -->
+                                </div>
+                                <!-- 右侧：文件预览面板 -->
+                                <div class="biz-material-preview" id="bizMaterialPreview">
+                                    <div class="biz-preview-tabs">
+                                        <button class="biz-preview-tab active" data-tab="pdf" onclick="switchBizPreviewTab('pdf')">PDF</button>
+                                        <button class="biz-preview-tab" data-tab="markdown" onclick="switchBizPreviewTab('markdown')">Markdown</button>
+                                        <button class="biz-preview-tab disabled-tab" id="tabOcrResult" data-tab="ocr" onclick="switchBizPreviewTab('ocr')" disabled>OCR识别结果</button>
+                                    </div>
+                                    <div class="biz-preview-canvas" id="bizPreviewCanvas">
+                                        <!-- PDF preview placeholder -->
+                                        <div class="biz-pdf-preview" id="bizPdfPreview">
+                                            <div class="pdf-mock-page">
+                                                <div class="pdf-mock-header">项目可行性研究报告</div>
+                                                <div class="pdf-mock-body">
+                                                    <p>遂溪县粤水电能源有限公司 100MW 光伏发电项目可行性研究报告</p>
+                                                    <p>项目选址于广东省湛江市遂溪县，规划装机容量 100MW，年均发电量约 1.2 亿千瓦时。项目采用高效单晶硅光伏组件，配套建设 110kV 升压站一座。</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Markdown preview placeholder -->
+                                        <div class="biz-markdown-preview hidden" id="bizMarkdownPreview">
+                                            <pre class="markdown-mock-text"># 项目可行性研究报告
+
+**项目名称：** 遂溪县粤水电能源有限公司 100MW 光伏发电项目
+
+**项目概况：**
+- 装机容量：100MW
+- 年均发电量：约 1.2 亿千瓦时
+- 建设地点：广东省湛江市遂溪县
+
+**绿色信贷判定依据：**
+符合《绿色产业指导目录（2025版）》第 4.1.2 条"太阳能利用装备制造"</pre>
+                                        </div>
+                                        <!-- OCR result placeholder -->
+                                        <div class="biz-ocr-preview hidden" id="bizOcrPreview">
+                                            <p style="color:var(--gray-400);text-align:center;padding:40px;" id="bizOcrPlaceholder">暂未生成OCR识别结果，请执行AI识别任务</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -5969,6 +6167,19 @@
                             if (st) { st.textContent = '成功'; st.className = 'file-status success'; }
                         }
                     }
+                    // Mark "分析完成" as done
+                    var doneGroup = document.getElementById('taskGroupDone');
+                    if (doneGroup) {
+                        var doneHeader = doneGroup.querySelector('.recog-task-group-header span:first-child');
+                        if (doneHeader) doneHeader.textContent = '分析完成';
+                        doneHeader.style.color = '#16a34a';
+                    }
+                    // Show 【查看详情】 button
+                    var viewBtn = document.getElementById('btnViewDetail');
+                    if (viewBtn) viewBtn.classList.remove('hidden');
+                    // Enable OCR tab
+                    var ocrTab = document.getElementById('tabOcrResult');
+                    if (ocrTab) { ocrTab.disabled = false; ocrTab.classList.remove('disabled-tab'); }
                 }
             }, 400);
         };
@@ -5982,6 +6193,18 @@
             recogElapsedSeconds = 0;
             recogProgress = 0;
             document.getElementById('recogStatusText').textContent = '识别过程（已耗时 00 分 00 秒，当前识别进度 0%）';
+            // Hide view detail button
+            var viewBtn = document.getElementById('btnViewDetail');
+            if (viewBtn) viewBtn.classList.add('hidden');
+            // Disable OCR tab
+            var ocrTab = document.getElementById('tabOcrResult');
+            if (ocrTab) { ocrTab.disabled = true; ocrTab.classList.add('disabled-tab'); }
+            // Reset done group header
+            var doneGroup = document.getElementById('taskGroupDone');
+            if (doneGroup) {
+                var dh = doneGroup.querySelector('.recog-task-group-header span:first-child');
+                if (dh) { dh.textContent = '分析完成（待触发）'; dh.style.color = ''; }
+            }
         };
 
         window.toggleRecognitionPanel = function () {
@@ -5993,6 +6216,106 @@
                     body.style.display = 'none';
                 }
             }
+        };
+
+        // ---- Biz Material Dialog ----
+        var currentBizFile = 'file-1';
+        var bizMaterialFiles = [
+            { id: 'file-1', group: '绿色贷款证明材料', name: '山西鑫秋农业发展股份有限公司 - 节能报告.pdf', icon: 'fa-file-pdf' },
+            { id: 'file-2', group: '绿色贷款证明材料', name: '募集说明书.pdf', icon: 'fa-file-pdf' },
+            { id: 'file-3', group: '项目底层用途材料', name: '可研报告 2.png', icon: 'fa-file-image' },
+            { id: 'file-4', group: '项目底层用途材料', name: '山西鑫秋农业发展股份有限公司 - 财务报告.zip', icon: 'fa-file-zipper' },
+            { id: 'file-5', group: '项目底层用途材料', name: '山西鑫秋农业发展股份有限公司 - 其他证明材料.zip', icon: 'fa-file-zipper' },
+            { id: 'file-6', group: '绿色融资百分比证明材料', name: '绿色融资占比测算表.xlsx', icon: 'fa-file-excel' },
+            { id: 'file-7', group: '环境效益测算证明材料', name: '环境效益测算报告.pdf', icon: 'fa-file-pdf' }
+        ];
+
+        window.openBizMaterialDialog = function () {
+            document.getElementById('bizMaterialOverlay').classList.add('open');
+            if (!document.getElementById('bizMaterialSidebar').hasChildNodes()) {
+                renderBizMaterialSidebar();
+            }
+            selectBizFile('file-1');
+        };
+
+        window.closeBizMaterialDialog = function () {
+            document.getElementById('bizMaterialOverlay').classList.remove('open');
+        };
+
+        function renderBizMaterialSidebar() {
+            var sidebar = document.getElementById('bizMaterialSidebar');
+            var groups = {};
+            bizMaterialFiles.forEach(function (f) {
+                if (!groups[f.group]) groups[f.group] = [];
+                groups[f.group].push(f);
+            });
+
+            var isCollapsible = {
+                '绿色融资百分比证明材料': true,
+                '环境效益测算证明材料': true
+            };
+
+            var html = '';
+            for (var g in groups) {
+                var collapsible = isCollapsible[g];
+                html += '<div class="biz-material-group' + (collapsible ? '' : '') + '" data-group="' + escapeHtml(g) + '">';
+                html += '<div class="biz-material-group-header" onclick="toggleBizMaterialGroup(this)" style="cursor:pointer;">';
+                if (collapsible) html += '<span class="collapse-arrow">▼</span>';
+                html += '<span>' + escapeHtml(g) + '</span>';
+                html += '</div>';
+                html += '<div class="biz-material-items">';
+                groups[g].forEach(function (f) {
+                    html += '<div class="biz-material-item" id="bizFile-' + f.id + '" data-id="' + f.id + '" onclick="selectBizFile(\'' + f.id + '\')">';
+                    html += '<i class="fa-solid ' + f.icon + ' file-icon"></i>';
+                    html += '<span class="file-name">' + escapeHtml(f.name) + '</span>';
+                    html += '</div>';
+                });
+                html += '</div>';
+                html += '</div>';
+            }
+            sidebar.innerHTML = html;
+        }
+
+        window.toggleBizMaterialGroup = function (header) {
+            var group = header.parentElement;
+            group.classList.toggle('collapsed');
+        };
+
+        window.selectBizFile = function (fileId) {
+            // Remove old active
+            document.querySelectorAll('.biz-material-item').forEach(function (el) { el.classList.remove('active'); });
+            // Add new active
+            var newActive = document.getElementById('bizFile-' + fileId);
+            if (newActive) newActive.classList.add('active');
+            currentBizFile = fileId;
+
+            // Update preview title & content
+            var file = bizMaterialFiles.find(function (f) { return f.id === fileId; });
+            if (file) {
+                var pdfPage = document.getElementById('bizPdfPreview');
+                if (pdfPage) {
+                    pdfPage.querySelector('.pdf-mock-header').textContent = file.name;
+                }
+                var mdPreview = document.getElementById('bizMarkdownPreview');
+                if (mdPreview) {
+                    mdPreview.querySelector('.markdown-mock-text').textContent = '# ' + file.name + '\n\n文件来源：' + file.group + '\n\nOCR 识别完成后自动生成结构化摘要。\n\n## 关键数据提取\n- 客户名称：山西鑫秋农业发展股份有限公司\n- 业务类型：绿色农业贷款\n- 金额：待核实';
+                }
+            }
+        };
+
+        window.switchBizPreviewTab = function (tabName) {
+            // Update tab active states
+            document.querySelectorAll('.biz-preview-tab').forEach(function (t) { t.classList.remove('active'); });
+            var activeTab = document.querySelector('.biz-preview-tab[data-tab="' + tabName + '"]');
+            if (activeTab) activeTab.classList.add('active');
+
+            // Toggle preview panels
+            var pdfPreview = document.getElementById('bizPdfPreview');
+            var mdPreview = document.getElementById('bizMarkdownPreview');
+            var ocrPreview = document.getElementById('bizOcrPreview');
+            if (pdfPreview) pdfPreview.classList.toggle('hidden', tabName !== 'pdf');
+            if (mdPreview) mdPreview.classList.toggle('hidden', tabName !== 'markdown');
+            if (ocrPreview) ocrPreview.classList.toggle('hidden', tabName !== 'ocr');
         };
 
         // ===================== Step 4 Click: 识别结果与初审 =====================
