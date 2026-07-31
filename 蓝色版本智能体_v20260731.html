@@ -1559,7 +1559,7 @@
             margin-bottom: 12px;
         }
         .prerecog-banner.match { background: #dcfce7; border: 1px solid #bbf7d0; }
-        .prerecog-banner.no-match { background: #eef1f3; border: 1px solid var(--gray-200); }
+        .prerecog-banner.no-match { background: #FFFFFF; border: 1px solid var(--gray-200); }
         .prerecog-banner i { font-size: 18px; }
         .prerecog-banner.match i { color: #16a34a; }
         .prerecog-banner.no-match i { color: var(--gray-400); }
@@ -2860,11 +2860,7 @@
                         </span>
                         <span class="flow-step-divider" id="fd2">›</span>
                         <span class="flow-step-item" id="fs-step3">
-                            <span class="dot">3</span> 识别结果与初审
-                        </span>
-                        <span class="flow-step-divider" id="fd3">›</span>
-                        <span class="flow-step-item" id="fs-step4">
-                            <span class="dot">4</span> 人为审核
+                            <span class="dot">3</span> 结果显示
                         </span>
                     </div>
 
@@ -2989,10 +2985,7 @@
                                 同步完成后左侧客户信息栏将自动从蒙浪绿企通数据库加载外部绿色标签数据
                             </div>
                             <div style="margin-top:14px;display:flex;gap:10px;justify-content:flex-end;">
-                                <button class="btn btn-primary" onclick="saveStep1()">
-                                    <i class="fa-solid fa-sync"></i> 从信贷系统同步客户信息
-                                </button>
-                                <button class="btn btn-outline" id="btnStep2Next" onclick="confirmStep2()" disabled>
+                                <button class="btn btn-outline" id="btnStep2Next" onclick="confirmStep2()">
                                     确认并继续 <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
@@ -3280,162 +3273,6 @@
                         </div>
                     </div>
 
-                    <!-- 步骤5: 人为审核 -->
-                    <div class="step-panel locked" id="stepPanel5">
-                        <div class="step-panel-header" onclick="clickStep5Audit()">
-                            <span class="step-num">5</span>
-                            <h3>人为审核</h3>
-                            <i class="fa-solid fa-chevron-down step-toggle-arrow"></i>
-                        </div>
-                        <div class="step-panel-body">
-                            <!-- 审核进度状态条 -->
-                            <div style="margin-bottom:18px;">
-                                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                                    <span style="font-size:13px;font-weight:600;color:var(--gray-700);">审核流转进度</span>
-                                    <span style="font-size:11.5px;color:var(--green-mid);font-weight:500;">当前节点：客户经理复核</span>
-                                </div>
-                                <div style="display:flex;align-items:center;gap:0;">
-                                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                                        <span style="width:20px;height:20px;border-radius:50%;background:#43A8C6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;">✓</span>
-                                        <span style="font-size:11px;color:#43A8C6;font-weight:500;">提交审核</span>
-                                    </div>
-                                    <div style="flex:1;height:2px;background:#43A8C6;margin:0 6px;min-width:24px;"></div>
-                                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                                        <span style="width:20px;height:20px;border-radius:50%;background:#43A8C6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;">✓</span>
-                                        <span style="font-size:11px;color:#43A8C6;font-weight:500;">AI预审</span>
-                                    </div>
-                                    <div style="flex:1;height:2px;background:var(--green-main);margin:0 6px;min-width:24px;position:relative;overflow:hidden;">
-                                        <div style="position:absolute;inset:0;background:var(--green-main);animation:pulse 1.5s ease-in-out infinite;"></div>
-                                    </div>
-                                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                                        <span style="width:24px;height:24px;border-radius:50%;background:var(--green-main);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">5</span>
-                                        <span style="font-size:11px;color:var(--green-mid);font-weight:600;">客户经理复核</span>
-                                    </div>
-                                    <div style="flex:1;height:2px;background:var(--gray-200);margin:0 6px;min-width:24px;"></div>
-                                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                                        <span style="width:20px;height:20px;border-radius:50%;background:var(--gray-200);color:var(--gray-400);display:flex;align-items:center;justify-content:center;font-size:10px;">6</span>
-                                        <span style="font-size:11px;color:var(--gray-400);">终审确认</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 审核意见表单 -->
-                            <div style="border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:0;">
-                                <!-- Section: 审核结果摘要 -->
-                                <div style="padding:16px 20px;border-bottom:1px solid var(--gray-100);">
-                                    <h4 style="font-size:14px;font-weight:600;color:var(--gray-800);margin-bottom:10px;display:flex;align-items:center;gap:8px;">
-                                        <i class="fa-solid fa-clipboard-check" style="color:var(--green-main);"></i> 审核结果摘要
-                                    </h4>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:13px;">
-                                        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dotted var(--gray-100);">
-                                            <span style="color:var(--gray-500);">AI识别结论</span>
-                                            <span style="font-weight:600;color:#43A8C6;">判定符合</span>
-                                        </div>
-                                        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dotted var(--gray-100);">
-                                            <span style="color:var(--gray-500);">匹配目录</span>
-                                            <span style="font-weight:500;color:var(--gray-800);">节能环保产业 · 高效节能装备制造</span>
-                                        </div>
-                                        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dotted var(--gray-100);">
-                                            <span style="color:var(--gray-500);">企业名称</span>
-                                            <span style="font-weight:500;color:var(--gray-800);" id="auditCompanyName">—</span>
-                                        </div>
-                                        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dotted var(--gray-100);">
-                                            <span style="color:var(--gray-500);">业务品种</span>
-                                            <span style="font-weight:500;color:var(--gray-800);" id="auditBizCategory">—</span>
-                                        </div>
-                                        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dotted var(--gray-100);">
-                                            <span style="color:var(--gray-500);">佐证材料</span>
-                                            <span style="font-weight:500;color:var(--gray-800);">已上传 3 份</span>
-                                        </div>
-                                        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dotted var(--gray-100);">
-                                            <span style="color:var(--gray-500);">预识别状态</span>
-                                            <span class="badge badge-green" style="font-size:11px;">已完成</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Section: 人为审核结论 -->
-                                <div style="padding:16px 20px;border-bottom:1px solid var(--gray-100);">
-                                    <h4 style="font-size:14px;font-weight:600;color:var(--gray-800);margin-bottom:10px;display:flex;align-items:center;gap:8px;">
-                                        <i class="fa-solid fa-user-check" style="color:var(--green-main);"></i> 人为审核结论 <span style="font-size:11px;color:var(--red-badge);">*</span>
-                                    </h4>
-                                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                                        <label style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:2px solid #43A8C6;border-radius:8px;background:#dcfce7;cursor:pointer;font-size:13px;font-weight:600;color:#43A8C6;" id="auditLabelApprove">
-                                            <input type="radio" name="auditResult" value="approve" checked style="accent-color:#43A8C6;" onchange="updateAuditLabelStyles()"> ✓ 认定通过
-                                        </label>
-                                        <label style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:2px solid var(--gray-200);border-radius:8px;background:var(--white);cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);" id="auditLabelReturn">
-                                            <input type="radio" name="auditResult" value="return" style="accent-color:#f97316;" onchange="updateAuditLabelStyles()"> ↻ 退回补充
-                                        </label>
-                                        <label style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:2px solid var(--gray-200);border-radius:8px;background:var(--white);cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);" id="auditLabelReject">
-                                            <input type="radio" name="auditResult" value="reject" style="accent-color:var(--red-badge);" onchange="updateAuditLabelStyles()"> ✗ 认定否决
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- Section: 审核意见 -->
-                                <div style="padding:16px 20px;border-bottom:1px solid var(--gray-100);">
-                                    <div class="form-group">
-                                        <label class="form-label">客户经理审核意见</label>
-                                        <textarea class="form-textarea" placeholder="请输入审核意见，如对AI识别结果的确认说明、补充材料要求、目录调整建议等……" style="min-height:100px;" id="auditOpinion"></textarea>
-                                        <span class="form-hint">该意见将随审核记录归档留存，作为绿色贷款认定依据之一。</span>
-                                    </div>
-                                </div>
-
-                                <!-- Section: 签字确认 -->
-                                <div style="padding:16px 20px;border-bottom:1px solid var(--gray-100);background:var(--gray-50);">
-                                    <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr;">
-                                        <div class="form-group">
-                                            <label class="form-label">审核人</label>
-                                            <input class="form-input" type="text" value="客户经理 · 用户" disabled style="background:var(--white);color:var(--gray-700);">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">审核日期</label>
-                                            <input class="form-input" type="text" id="auditDate" disabled style="background:var(--white);color:var(--gray-700);">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">所属机构</label>
-                                            <input class="form-input" type="text" value="深圳分行 · 公司金融部" disabled style="background:var(--white);color:var(--gray-700);">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Section: 操作按钮 -->
-                                <div style="padding:16px 20px;display:flex;gap:10px;align-items:center;">
-                                    <button class="btn btn-primary" onclick="submitAudit()">
-                                        <i class="fa-solid fa-paper-plane"></i> 提交审核结论
-                                    </button>
-                                    <button class="btn btn-outline" onclick="saveAuditDraft()">
-                                        <i class="fa-solid fa-save"></i> 暂存草稿
-                                    </button>
-                                    <button class="btn btn-ghost" onclick="alert('已返回上一步：识别结果')">
-                                        返回修改
-                                    </button>
-                                    <span style="margin-left:auto;font-size:11.5px;color:var(--gray-400);">
-                                        <i class="fa-solid fa-info-circle"></i> 提交后将流转至终审环节
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- 审计日志 -->
-                            <div style="margin-top:14px;padding:12px 16px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-100);">
-                                <h5 style="font-size:12px;font-weight:600;color:var(--gray-500);margin-bottom:8px;display:flex;align-items:center;gap:6px;">
-                                    <i class="fa-solid fa-clock-rotate-left"></i> 审核操作日志
-                                </h5>
-                                <div style="font-size:12px;color:var(--gray-600);line-height:1.8;" id="auditLog">
-                                    <div style="display:flex;gap:12px;padding:3px 0;">
-                                        <span style="color:var(--gray-400);flex-shrink:0;">2025-07-21 10:32</span>
-                                        <span><strong style="color:var(--green-mid);">AI预审</strong> 自动完成识别，匹配目录：高效节能装备制造</span>
-                                    </div>
-                                    <div style="display:flex;gap:12px;padding:3px 0;">
-                                        <span style="color:var(--gray-400);flex-shrink:0;">2025-07-21 10:32</span>
-                                        <span><strong style="color:var(--gray-600);">系统</strong> 任务已流转至客户经理复核节点，待人工确认</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             </div>
         </div>
 
@@ -6462,21 +6299,7 @@
 
         // ===================== Step 5 Click: 人为审核 =====================
         window.clickStep5Audit = function () {
-            var panel = document.getElementById('stepPanel5');
-            if (panel.classList.contains('expanded')) {
-                panel.classList.remove('expanded');
-                return;
-            }
-            panel.classList.remove('locked');
-            panel.classList.add('expanded');
-            updateFlowStep(4);
-            var companyName = document.getElementById('profileName').textContent.trim() || '遂溪县粤水电能源有限公司';
-            document.getElementById('auditCompanyName').textContent = companyName;
-            document.getElementById('auditBizCategory').textContent = '固定资产贷款';
-            var now = new Date();
-            document.getElementById('auditDate').value = now.getFullYear() + '-' +
-                String(now.getMonth() + 1).padStart(2, '0') + '-' +
-                String(now.getDate()).padStart(2, '0');
+            // no-op: step 5 removed
         };
 
         // ===================== AI Recognition Flow =====================
@@ -6606,7 +6429,7 @@
         };
 
         function updateFlowStep(step) {
-            for (var i = 1; i <= 4; i++) {
+            for (var i = 1; i <= 3; i++) {
                 var fs = document.getElementById('fs-step' + i);
                 if (!fs) continue;
                 if (i < step) {
@@ -6617,7 +6440,7 @@
                     fs.className = 'flow-step-item';
                 }
             }
-            for (var j = 1; j <= 4; j++) {
+            for (var j = 1; j <= 3; j++) {
                 var fd = document.getElementById('fd' + j);
                 if (!fd) continue;
                 if (j < step) {
@@ -6771,97 +6594,13 @@
             var co2Reduction = document.getElementById('co2ReductionInput').value;
             // Submit simulation
             closeGreenLoanDialog();
-            // Then unlock step 5
-            document.getElementById('stepPanel5').classList.remove('locked');
-            expandStepPanel('stepPanel5');
-            updateFlowStep(4);
-            var companyName = document.getElementById('profileName').textContent.trim() || '遂溪县粤水电能源有限公司';
-            document.getElementById('auditCompanyName').textContent = companyName;
-            document.getElementById('auditBizCategory').textContent = '固定资产贷款';
-            var now = new Date();
-            document.getElementById('auditDate').value = now.getFullYear() + '-' +
-                String(now.getMonth() + 1).padStart(2, '0') + '-' +
-                String(now.getDate()).padStart(2, '0');
-            document.getElementById('stepPanel5').scrollIntoView({ behavior: 'smooth' });
         };
 
-        // ===================== Audit Step 4 Functions =====================
-        window.goToAuditStep = function () {
-            updateFlowStep(4);
-            document.getElementById('stepPanel5').classList.remove('locked');
-            expandStepPanel('stepPanel5');
-
-            // Populate audit summary from previous steps
-            var companyName = document.getElementById('profileName').textContent.trim() || '遂溪县粤水电能源有限公司';
-            var bizCategoryEl = document.getElementById('bizCategory');
-            var bizCategoryText = bizCategoryEl ? (bizCategoryEl.options ? bizCategoryEl.selectedOptions[0].text : bizCategoryEl.value) : '固定资产贷款';
-            var now = new Date();
-            var dateStr = now.getFullYear() + '-' +
-                String(now.getMonth() + 1).padStart(2, '0') + '-' +
-                String(now.getDate()).padStart(2, '0');
-
-            document.getElementById('auditCompanyName').textContent = companyName;
-            document.getElementById('auditBizCategory').textContent = bizCategoryText;
-            document.getElementById('auditDate').value = dateStr;
-        };
-
-        window.submitAudit = function () {
-            var opinion = document.getElementById('auditOpinion').value.trim();
-            var resultEl = document.querySelector('input[name="auditResult"]:checked');
-            var result = resultEl ? resultEl.value : 'approve';
-            var resultLabels = { approve: '认定通过', return: '退回补充', reject: '认定否决' };
-
-            if (!opinion) {
-                if (!confirm('审核意见为空，确认提交？')) return;
-            }
-
-            // Add to audit log
-            var log = document.getElementById('auditLog');
-            var now = new Date();
-            var timeStr = now.getFullYear() + '-' +
-                String(now.getMonth() + 1).padStart(2, '0') + '-' +
-                String(now.getDate()).padStart(2, '0') + ' ' +
-                String(now.getHours()).padStart(2, '0') + ':' +
-                String(now.getMinutes()).padStart(2, '0');
-            var colorMap = { approve: '#43A8C6', return: '#f97316', reject: 'var(--red-badge)' };
-            var iconMap = { approve: 'fa-check-circle', return: 'fa-rotate-left', reject: 'fa-xmark-circle' };
-            var entry = '<div style="display:flex;gap:12px;padding:3px 0;">' +
-                '<span style="color:var(--gray-400);flex-shrink:0;">' + timeStr + '</span>' +
-                '<span><strong style="color:' + (colorMap[result] || '#333') + ';">客户经理</strong> 审核结论：' +
-                resultLabels[result] + '。' + (opinion ? '意见：' + escHtml(opinion) : '') + '</span></div>';
-            log.insertAdjacentHTML('beforeend', entry);
-
-            alert('审核结论已提交！\n\n结论：' + resultLabels[result] + '\n' + (opinion ? '意见：' + opinion + '\n\n' : '\n') + '该任务已流转至终审确认环节。');
-        };
-
-        window.saveAuditDraft = function () {
-            alert('草稿已保存。可在首页看板待处理任务列表中恢复继续审核。');
-        };
-
-        window.updateAuditLabelStyles = function () {
-            var labels = ['auditLabelApprove', 'auditLabelReturn', 'auditLabelReject'];
-            var styles = [
-                { border: '2px solid #43A8C6', background: '#dcfce7', color: '#43A8C6', weight: '600' },
-                { border: '2px solid #f97316', background: '#fff7ed', color: '#f97316', weight: '600' },
-                { border: '2px solid var(--red-badge)', background: 'var(--red-badge-bg)', color: 'var(--red-badge)', weight: '600' }
-            ];
-            var defaults = [
-                { border: '2px solid var(--gray-200)', background: 'var(--white)', color: 'var(--gray-600)', weight: '500' },
-                { border: '2px solid var(--gray-200)', background: 'var(--white)', color: 'var(--gray-600)', weight: '500' },
-                { border: '2px solid var(--gray-200)', background: 'var(--white)', color: 'var(--gray-600)', weight: '500' }
-            ];
-            for (var i = 0; i < labels.length; i++) {
-                var el = document.getElementById(labels[i]);
-                if (!el) continue;
-                var radio = el.querySelector('input[type="radio"]');
-                var isChecked = radio && radio.checked;
-                var s = isChecked ? styles[i] : defaults[i];
-                el.style.border = s.border;
-                el.style.background = s.background;
-                el.style.color = s.color;
-                el.style.fontWeight = s.weight;
-            }
-        };
+        // ===================== Legacy Audit Functions (no-op — step 5 removed) =====================
+        window.goToAuditStep = function () { };
+        window.submitAudit = function () { };
+        window.saveAuditDraft = function () { };
+        window.updateAuditLabelStyles = function () { };
 
         function escHtml(str) {
             var d = document.createElement('div');
