@@ -1453,6 +1453,72 @@
             margin: 0 auto;
         }
 
+        /* ---- AI Analysis Result Panel ---- */
+        .ai-analysis-result {
+            text-align: left;
+            padding: 0;
+            color: var(--gray-800);
+            line-height: 1.7;
+        }
+        .ai-analysis-result.hidden { display: none; }
+        .ai-analysis-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 16px;
+        }
+        .ai-analysis-status-line {
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+        .ai-analysis-material-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            color: var(--green-mid);
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 16px;
+        }
+        .ai-analysis-material-toggle:hover { text-decoration: underline; }
+        .ai-analysis-item {
+            margin-bottom: 14px;
+            font-size: 13.5px;
+            color: var(--gray-800);
+        }
+        .ai-analysis-item .item-symbol {
+            display: inline-block;
+            width: 18px;
+            flex-shrink: 0;
+            font-weight: 700;
+        }
+        .ai-analysis-catalog {
+            color: var(--gold);
+            font-weight: 600;
+        }
+        .ai-analysis-sub-items {
+            padding-left: 22px;
+            font-size: 13px;
+            color: var(--gray-700);
+            line-height: 1.75;
+        }
+        .ai-analysis-sub-items ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .ai-analysis-sub-items ol li {
+            margin-bottom: 6px;
+        }
+        .ai-analysis-sync-btn-wrap {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-100);
+        }
+
         /* Upload zone */
         .upload-zone {
             border: 2px dashed var(--gray-200);
@@ -3126,32 +3192,21 @@
                         </div>
                     </div>
 
-                    <!-- 步骤4: 识别结果与初审 -->
+                    <!-- 步骤4: 结果显示 -->
                     <div class="step-panel locked" id="stepPanel4">
                         <div class="step-panel-header" onclick="clickStep4AiResult()">
                             <span class="step-num">4</span>
-                            <h3>识别结果与初审</h3>
+                            <h3>结果显示</h3>
                             <i class="fa-solid fa-chevron-down step-toggle-arrow"></i>
                         </div>
                         <div class="step-panel-body">
-                            <div class="material-alert warning" id="missingMaterialAlert" style="display:none;">
-                                <i class="fa-solid fa-triangle-exclamation"></i>
-                                <div>
-                                    <strong>缺少关键材料：</strong><span id="missingMaterialText"></span>
-                                    <br>请返回上一步补充上传，否则将影响识别结果准确性。
-                                </div>
-                            </div>
-
                             <div id="aiResultArea" style="text-align:center;padding:40px 20px;color:var(--gray-400);">
                                 <i class="fa-solid fa-hourglass-half" style="font-size:32px;display:block;margin-bottom:12px;"></i>
                                 <p>完成前序步骤后，系统将自动进行AI辅助识别</p>
                                 <p style="font-size:12px;margin-top:4px;">识别结果将在此展示，客户经理可核对确认</p>
                             </div>
-
-                            <!-- Data accountability notice -->
-                            <div class="branch-notice info" style="margin-top:16px;">
-                                <i class="fa-solid fa-shield-halved"></i>
-                                <span><strong>权责声明：</strong>企业基础信息及业务品种等分类字段若为信贷系统存量业务，将自动回填；项目描述、资金用途证明、证书、财报等佐证材料必须由客户经理手动上传。资料真实性、完整性由客户经理负责。</span>
+                            <!-- AI 合理性分析结果（识别完成后动态填充） -->
+                            <div class="ai-analysis-result hidden" id="aiAnalysisResult">
                             </div>
                         </div>
                     </div>
@@ -6177,6 +6232,12 @@
                     // Enable OCR tab
                     var ocrTab = document.getElementById('tabOcrResult');
                     if (ocrTab) { ocrTab.disabled = false; ocrTab.classList.remove('disabled-tab'); }
+                    // Auto-trigger step 4: 结果显示 + AI 合理性分析
+                    setTimeout(function () {
+                        document.getElementById('stepPanel4').classList.remove('locked');
+                        expandStepPanel('stepPanel4');
+                        showAiAnalysisResult(mins, secs);
+                    }, 600);
                 }
             }, 400);
         };
@@ -6544,33 +6605,91 @@
         };
 
         function showAiResult() {
-            var resultArea = document.getElementById('aiResultArea');
-            var isBuyer = true; // loan party is buyer
-
-            resultArea.style.textAlign = 'left';
-            resultArea.style.padding = '20px';
-            resultArea.style.color = 'var(--gray-800)';
-
-            var html = '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:14px 18px;background:#dcfce7;border-radius:8px;">';
-            html += '<i class="fa-solid fa-circle-check" style="font-size:24px;color:#43A8C6;"></i>';
-            html += '<div><div style="font-size:15px;font-weight:700;color:var(--gray-800);">AI辅助识别结果：判定符合</div>';
-            html += '<div style="font-size:12px;color:var(--gray-500);">匹配目录：清洁能源产业 · 太阳能利用装备制造（三级子目精确匹配）</div></div></div>';
-
-            html += '<div style="border:1px solid var(--gray-200);border-radius:8px;padding:16px;margin-bottom:12px;">';
-            html += '<h4 style="font-size:13.5px;font-weight:600;margin-bottom:10px;"><i class="fa-solid fa-scale-balanced" style="color:var(--green-main);margin-right:6px;"></i>合同身份判定</h4>';
-            html += '<p style="font-size:13px;margin-bottom:4px;">贷款主体：<strong>' + (isBuyer ? '遂溪县粤水电能源有限公司（买方）' : '乙方（卖方）') + '</strong></p>';
-            html += '<p style="font-size:13px;color:var(--gray-600);">判定结论：贷款主体为买方 → 业务属于<strong style="color:var(--green-mid);">绿色设备建设/运营</strong></p>';
-            html += '<p style="font-size:11.5px;color:var(--gray-400);margin-top:4px;">此身份判定逻辑已写入大模型识别规则，作为目录匹配核心判断依据。</p>';
-            html += '</div>';
-
-            html += '<div style="margin-top:12px;display:flex;gap:10px;">';
-            html += '<button class="btn btn-primary" onclick="goToAuditStep()"><i class="fa-solid fa-check"></i> 确认并进入人为审核</button>';
-            html += '<button class="btn btn-outline" onclick="alert(\'返回修改材料上传\')">返回修改</button>';
-            html += '</div>';
-
-            resultArea.innerHTML = html;
-            updateFlowStep(4);
+            // no-op: replaced by showAiAnalysisResult
         }
+
+        function showAiAnalysisResult(mins, secs) {
+            var resultArea = document.getElementById('aiResultArea');
+            var analysisPanel = document.getElementById('aiAnalysisResult');
+            // Hide placeholder
+            resultArea.style.display = 'none';
+            // Show analysis
+            analysisPanel.classList.remove('hidden');
+            updateFlowStep(4);
+
+            var hours = Math.floor(mins / 60);
+            var remainMins = mins % 60;
+            var timeStr = '';
+            if (hours > 0) timeStr += hours + ' 小时 ';
+            timeStr += remainMins + ' 分 ' + secs + ' 秒';
+
+            var html = '';
+            html += '<div class="ai-analysis-title">Ai 合理性分析结果</div>';
+            html += '<div class="ai-analysis-status-line">识别过程（已完成 耗时 ' + timeStr + '）</div>';
+            html += '<div style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">好的，根据用户需要，将上传的证明材料进行 OCR 识别，识别内容包括"绿贷识别"等</div>';
+            html += '<div class="ai-analysis-material-toggle" onclick="toggleBizMaterialInline()">业务资料 <span style="font-size:10px;">▽</span>展开</div>';
+            html += '<div style="font-size:13px;color:var(--gray-600);margin-bottom:18px;">分析已完成，根据您提供的证明材料，识别结果如下</div>';
+
+            // Catalog line with ⚠️
+            html += '<div class="ai-analysis-item" style="margin-bottom:20px;">';
+            html += '<span class="item-symbol" style="color:#f59e0b;">⚠️</span>';
+            html += '<span class="ai-analysis-catalog">绿色金融支持项目目录：4 能源绿色低碳转型 / 4.2 清洁能源设施建设和运营 / 4.2.2 太阳能利用设施建设和运营</span>';
+            html += '</div>';
+
+            // ☑ items
+            html += '<div class="ai-analysis-item">';
+            html += '<span class="item-symbol" style="color:var(--green-mid);">☑</span> 识别依据：该业务内容涉及利用水库消落区建设光伏电站，属于太阳能资源的开发和利用范畴，因此属于"太阳能利用设施建设和运营"这一产业分类。';
+            html += '</div>';
+
+            html += '<div class="ai-analysis-item">';
+            html += '<span class="item-symbol" style="color:var(--green-mid);">☑</span> 识别结果的合理性分析：';
+            html += '<div class="ai-analysis-sub-items">';
+            html += '<ol>';
+            html += '<li><b>【分类界定】：</b>该业务名称明确提及光伏电站，属于太阳能光伏发电设施的建设范畴，符合太阳能利用设施建设和运营的产业定义。但需注意，项目名与产业描述需进一步确认是否属于分布式能源项目。根据注意事项，若为新投放项目，建议统一归类为\'分布式能源工程建设和运营\'，但当前信息不足以明确判断。</li>';
+            html += '<li><b>【资料审查】：</b>未检测到相关证明材料，建议补充：环评批复文件、施工合同或设备采购发票等材料，以进一步验证其符合太阳能发电设施建设活动的认定标准。</li>';
+            html += '<li><b>【综合研判】：</b>该项目属于太阳能光伏发电设施的建设范畴，但未提供具体的资金用途材料，建议进一步补充材料，明确贷款资金用途，降低漂绿风险。</li>';
+            html += '</ol>';
+            html += '</div>';
+            html += '</div>';
+
+            html += '<div class="ai-analysis-item">';
+            html += '<span class="item-symbol" style="color:var(--green-mid);">☑</span> 与绿色贷款相关的用途说明：材料中与绿色贷款相关的资金用途说明未明确提及，但项目名称显示为光伏电站建设相关。';
+            html += '</div>';
+
+            html += '<div class="ai-analysis-item">';
+            html += '<span class="item-symbol" style="color:var(--green-mid);">☑</span> 对应《绿色金融支持项目目录》的"条件 / 标准"：太阳能发电设施运营活动。包括太阳能光伏发电和太阳能热发电设施的运营活动。太阳能发电设施建设活动。包括太阳能光伏发电和太阳能光热发电设施的建设活动。太阳能热利用设施运营活动。架线及设备工程建筑活动中（建筑物之外）太阳能供热管网、光热利用设备安装、建设活动。管道和设备安装活动中（建筑物之内或依托建筑物的）太阳能采暖、热水供应系统建设活动。';
+            html += '</div>';
+
+            html += '<div class="ai-analysis-item">';
+            html += '<span class="item-symbol" style="color:var(--green-mid);">☑</span> 该笔贷款满足《绿色金融支持项目目录》"条件 / 标准"的具体佐证材料：4 - 遂溪县官田水库 50MW 光伏发电项目可行性研究报告.pdf';
+            html += '</div>';
+
+            // Sync button
+            html += '<div class="ai-analysis-sync-btn-wrap">';
+            html += '<button class="btn btn-primary" onclick="syncAiResultToAudit()">Ai 识别结果一键同步</button>';
+            html += '</div>';
+
+            analysisPanel.innerHTML = html;
+        }
+
+        window.toggleBizMaterialInline = function () {
+            openBizMaterialDialog();
+        };
+
+        window.syncAiResultToAudit = function () {
+            document.getElementById('stepPanel5').classList.remove('locked');
+            expandStepPanel('stepPanel5');
+            updateFlowStep(4);
+            var companyName = document.getElementById('profileName').textContent.trim() || '遂溪县粤水电能源有限公司';
+            document.getElementById('auditCompanyName').textContent = companyName;
+            document.getElementById('auditBizCategory').textContent = '固定资产贷款';
+            var now = new Date();
+            document.getElementById('auditDate').value = now.getFullYear() + '-' +
+                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                String(now.getDate()).padStart(2, '0');
+            // Scroll to step 5
+            document.getElementById('stepPanel5').scrollIntoView({ behavior: 'smooth' });
+        };
 
         // ===================== Audit Step 4 Functions =====================
         window.goToAuditStep = function () {
