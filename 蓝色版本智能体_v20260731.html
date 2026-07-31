@@ -3192,6 +3192,75 @@
                         </div>
                     </div>
 
+                    <!-- GRS 绿色贷款信息录入弹窗（AI识别结果一键同步后唤出） -->
+                    <div class="detail-overlay" id="greenLoanDialogOverlay" onclick="if(event.target===this)closeGreenLoanDialog()">
+                        <div class="detail-panel" style="width:680px;max-height:90vh;">
+                            <div class="detail-panel-header">
+                                <h3>绿色贷款信息录入</h3>
+                                <button style="background:none;border:none;font-size:16px;color:var(--gray-400);cursor:pointer;" onclick="closeGreenLoanDialog()">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <div class="detail-panel-body" style="display:flex;flex-direction:column;gap:20px;">
+                                <!-- 1. 绿色分类 -->
+                                <div>
+                                    <div class="form-group">
+                                        <label class="form-label">绿色贷款分类 <span class="required">*</span></label>
+                                        <div class="custom-select-wrap">
+                                            <select class="form-select" id="greenClassifySelect" style="width:100%;">
+                                                <option value="">请选择</option>
+                                                <option value="4.1">4.1 节能降碳产业</option>
+                                                <option value="4.2">4.2 清洁能源设施建设和运营</option>
+                                                <option value="4.2.2">4.2.2 太阳能利用设施建设和运营</option>
+                                                <option value="4.3">4.3 环境保护产业</option>
+                                                <option value="4.4">4.4 绿色能源转型升级</option>
+                                            </select>
+                                            <i class="fa-solid fa-chevron-down select-arrow"></i>
+                                        </div>
+                                        <p style="font-size:12px;color:var(--gray-500);margin-top:4px;line-height:1.6;">
+                                            根据人民银行和金监总局统计制度要求填报。绿色贷款指金融机构为支持环境改善、应对气候变化和资源节约高效利用等领域的经济活动，发放给企（事）业法人、国家规定可以作为借款人的其他组织或其他组织或个人，用于生产、贸易、消费等环节的贷款。能确切证明符合本制度规定用途的贷款才能纳入统计范围。本制度依据贷款用途确定绿色贷款范围，遵照<span style="color:var(--green-mid);cursor:pointer;text-decoration:underline;">《绿色金融支持项目目录（2025 年版本）》</span>贯彻执行。
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- 2. 绿色融资百分比 -->
+                                <div>
+                                    <div class="form-group">
+                                        <label class="form-label">绿色融资百分比</label>
+                                        <div style="display:flex;align-items:center;gap:6px;">
+                                            <input class="form-input" type="number" id="greenPercentInput" value="100" min="0" max="100" style="width:120px;text-align:right;">
+                                            <span style="font-size:14px;color:var(--gray-600);">%</span>
+                                        </div>
+                                        <p style="font-size:12px;color:var(--gray-500);margin-top:4px;line-height:1.6;">
+                                            为提升绿色信贷数据质量，推动我行绿色金融发展，参考监管统计制度要求及同业现状，在 GRS 系统中增加绿色信贷按比例打标功能。可选择该笔贷款绿色融资部分占该笔贷款比例，默认比例为 100%。
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- 3. 环境效益测算（节能减排） -->
+                                <div>
+                                    <h4 style="font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:12px;">环境效益测算（节能减排）</h4>
+                                    <div class="form-group" style="margin-bottom:12px;">
+                                        <label class="form-label">项目投资总额（折人民币）</label>
+                                        <div style="display:flex;align-items:center;gap:6px;">
+                                            <input class="form-input" type="text" id="investTotalInput" placeholder="请输入" style="flex:1;">
+                                            <span style="font-size:13px;color:var(--gray-500);white-space:nowrap;">万元</span>
+                                        </div>
+                                        <p style="font-size:12px;color:#f97316;margin-top:2px;">请确认数目大于 0</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">项目年二氧化碳减排量</label>
+                                        <input class="form-input" type="text" id="co2ReductionInput" placeholder="可通过手工录入或项目环境效益测算数据模型计算得出">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-panel-footer" style="justify-content:center;gap:12px;">
+                                <button class="btn btn-ghost" onclick="prevStepGreenLoan()">上一步</button>
+                                <button class="btn btn-primary" onclick="submitGreenLoan()">提交</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- 步骤4: 结果显示 -->
                     <div class="step-panel locked" id="stepPanel4">
                         <div class="step-panel-header" onclick="clickStep4AiResult()">
@@ -6677,6 +6746,32 @@
         };
 
         window.syncAiResultToAudit = function () {
+            // Open GRS green loan info entry dialog instead of old step 5
+            openGreenLoanDialog();
+        };
+
+        // ---- GRS 绿色贷款信息录入 Dialog ----
+        window.openGreenLoanDialog = function () {
+            document.getElementById('greenLoanDialogOverlay').classList.add('open');
+        };
+        window.closeGreenLoanDialog = function () {
+            document.getElementById('greenLoanDialogOverlay').classList.remove('open');
+        };
+        window.prevStepGreenLoan = function () {
+            document.getElementById('greenLoanDialogOverlay').classList.remove('open');
+        };
+        window.submitGreenLoan = function () {
+            var classifyVal = document.getElementById('greenClassifySelect').value;
+            if (!classifyVal) {
+                // silently check
+                return;
+            }
+            var percent = document.getElementById('greenPercentInput').value || '100';
+            var investAmt = document.getElementById('investTotalInput').value;
+            var co2Reduction = document.getElementById('co2ReductionInput').value;
+            // Submit simulation
+            closeGreenLoanDialog();
+            // Then unlock step 5
             document.getElementById('stepPanel5').classList.remove('locked');
             expandStepPanel('stepPanel5');
             updateFlowStep(4);
@@ -6687,7 +6782,6 @@
             document.getElementById('auditDate').value = now.getFullYear() + '-' +
                 String(now.getMonth() + 1).padStart(2, '0') + '-' +
                 String(now.getDate()).padStart(2, '0');
-            // Scroll to step 5
             document.getElementById('stepPanel5').scrollIntoView({ behavior: 'smooth' });
         };
 
